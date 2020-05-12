@@ -2,8 +2,13 @@ package com.example.lab.controller;
 
 import java.security.Principal;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class UserController {
@@ -13,4 +18,10 @@ public class UserController {
         System.out.println(principal);
         return principal;
     }
+
+    @RequestMapping(value="/hello")
+    public String hello(String name){
+        return  "hello -> " + name;
+    }
+
 }
