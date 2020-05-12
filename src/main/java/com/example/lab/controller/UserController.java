@@ -21,6 +21,7 @@ public class UserController {
 
     @RequestMapping(value="/hello")
     public String hello(String name){
+        int a = 1/0;
         return  "hello -> " + name;
     }
 

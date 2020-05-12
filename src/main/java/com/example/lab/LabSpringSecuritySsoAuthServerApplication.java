@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 
 @SpringBootApplication
 @EnableResourceServer
+//@ComponentScan({"com.example.lab.base.exception","com.example"})
 public class LabSpringSecuritySsoAuthServerApplication {
 
     public static void main(String[] args) {
