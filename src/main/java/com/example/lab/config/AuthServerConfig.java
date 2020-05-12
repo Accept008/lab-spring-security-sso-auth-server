@@ -65,14 +65,17 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
             .withClient("SampleClientId")
             .secret(passwordEncoder.encode("secret"))
             //.authorizedGrantTypes("authorization_code")
-                //设置支持[密码模式、授权码模式、token刷新]
+                //设置支持[密码模式、客户端模式、授权码模式、token刷新]
             .authorizedGrantTypes(
                     "password",
+                    "client_credentials",
                     "authorization_code",
                     "refresh_token")
+            //.scopes("user_info","jwt-resource-server")
             .scopes("user_info")
             .autoApprove(true)
-            .redirectUris("http://localhost:8082/ui/login","http://localhost:8083/ui2/login","http://localhost:8082/login","http://www.example.com/")
+
+        //.redirectUris("http://localhost:8082/ui/login","http://localhost:8083/ui2/login","http://localhost:8082/login","http://www.example.com/")
         // .accessTokenValiditySeconds(3600)
         ; // 1 hour
     }
