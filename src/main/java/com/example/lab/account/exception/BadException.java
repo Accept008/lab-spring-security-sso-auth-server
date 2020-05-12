@@ -1,6 +1,7 @@
-package com.example.lab.base.exception;
+package com.example.lab.account.exception;
 
-import com.example.lab.base.exception.annotation.ExceptionResponseInfo;
+import cn.soundbus.library.core.exception.annotation.ExceptionResponseInfo;
+import cn.soundbus.library.core.exception.general.GeneralException;
 import org.springframework.http.HttpStatus;
 
 /**

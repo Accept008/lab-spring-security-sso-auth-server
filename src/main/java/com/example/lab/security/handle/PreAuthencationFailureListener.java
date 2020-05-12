@@ -1,6 +1,6 @@
 package com.example.lab.security.handle;
 
-import com.example.lab.base.exception.BadException;
+import com.example.lab.account.exception.BadException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.*;
