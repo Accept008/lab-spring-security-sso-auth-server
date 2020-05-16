@@ -20,34 +20,34 @@ import java.util.List;
  */
 @Slf4j
 @Service
-//接管
-public class UserDetailsServiceImpl{
-//public class UserDetailsServiceImpl implements UserDetailsService {
+//【接管A-3】
+//public class UserDetailsServiceImpl{
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-//    @Autowired
-//    private UserService userService;
-//
-//    /**
-//     * 用户名密码登录
-//     *
-//     * @param username
-//     * @return
-//     * @throws UsernameNotFoundException
-//     */
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//
-//        User user = userService.getUserByEmailOrMobile(username);
-//        if (ObjectUtil.isNull(user)) {
-//            log.info("登录用户：" + username + " 不存在.");
-//            throw new UsernameNotFoundException("登录用户：" + username + " 不存在");
-//        }
-////        user.getRoles();
-//        System.out.println("db user -> "+ JSON.toJSONString(user));
-//        List<String> roles = new ArrayList<>();
-//        roles.add("USER");
-//        Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("role_admin");
-//        return new SmSecurityUser(user.getId(), username, user.getPassword(), authorities, LoginType.normal);
-//    }
+    @Autowired
+    private UserService userService;
+
+    /**
+     * 用户名密码登录
+     *
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        User user = userService.getUserByEmailOrMobile(username);
+        if (ObjectUtil.isNull(user)) {
+            log.info("登录用户：" + username + " 不存在.");
+            throw new UsernameNotFoundException("登录用户：" + username + " 不存在");
+        }
+//        user.getRoles();
+        System.out.println("db user -> "+ JSON.toJSONString(user));
+        List<String> roles = new ArrayList<>();
+        roles.add("USER");
+        Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("role_admin");
+        return new SmSecurityUser(user.getId(), username, user.getPassword(), authorities, LoginType.normal);
+    }
 
 }

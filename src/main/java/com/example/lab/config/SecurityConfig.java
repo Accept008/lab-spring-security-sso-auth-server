@@ -13,12 +13,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
-@Order(1)
+@Order(2)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    //【接管A-2】
     @Autowired
     LoginAuthenticationProvider loginAuthenticationProvider;
 
+    // 【接管A-3】
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
@@ -44,15 +46,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception { // @formatter:off
-        auth.inMemoryAuthentication()
-            .withUser("john")
-            .password(passwordEncoder().encode("123"))
-            .roles("USER");
+//        auth.inMemoryAuthentication()
+//            .withUser("john")
+//            .password(passwordEncoder().encode("123"))
+//            .roles("USER");
 
-//        auth.authenticationProvider(loginAuthenticationProvider)
-//                .userDetailsService(userDetailsService)
-//                .passwordEncoder(passwordEncoder())
-//        ;
+        // 【接管A-1】登录账号配置读取数据库
+        auth.authenticationProvider(loginAuthenticationProvider)
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder())
+        ;
     } // @formatter:on
 //
     @Bean

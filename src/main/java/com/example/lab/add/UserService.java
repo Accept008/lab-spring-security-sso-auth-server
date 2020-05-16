@@ -18,5 +18,9 @@ public class UserService {
         return user;
     }
 
+    public boolean passwordMatch(String pwd, String oriPwd, String salt) {
+        return pwd.equals(oriPwd);
+
+    }
 
 }

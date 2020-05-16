@@ -19,41 +19,42 @@ import org.springframework.stereotype.Component;
  * @Date 2020-04-28
  */
 @Component
-// 接管
-public class LoginAuthenticationProvider{
-//public class LoginAuthenticationProvider extends DaoAuthenticationProvider {
+// 【接管】
+//public class LoginAuthenticationProvider{
+public class LoginAuthenticationProvider extends DaoAuthenticationProvider {
 
-//    @Autowired
-//    UserService userService;
-//
-//    @Autowired
-//    UserDetailsServiceImpl userDetailsService;
-//
-//    public LoginAuthenticationProvider(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
-//        super();
-//        // 这个地方一定要对userDetailsService赋值，不然userDetailsService是null (这个坑有点深)
-//        setUserDetailsService(userDetailsService);
-//    }
-//
-//    @Override
-//    protected void additionalAuthenticationChecks(UserDetails userDetails,
-//                                                  UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-//
-//        String username = authentication.getName();
-//        String presentedPassword = (String)authentication.getCredentials();
-//
-//        // 根据用户名获取用户信息
-//        User user = this.userService.getUserByEmailOrMobile(username);
-//        if (user == null) {
-//            throw new BadCredentialsException("用户名不存在");
-//        } else {
-////            if (authentication.getCredentials() == null) {
-////                throw new BadCredentialsException("登录名或密码错误");
-////            } else if (!userService.passwordMatch(presentedPassword, user.getPassword(), user.getSalt())) {
-////                throw new BadCredentialsException("登录密码错误");
-////            }
+    @Autowired
+    UserService userService;
+
+    //【接管A-3】
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
+
+    public LoginAuthenticationProvider(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
+        super();
+        // 这个地方一定要对userDetailsService赋值，不然userDetailsService是null (这个坑有点深)
+        setUserDetailsService(userDetailsService);
+    }
+
+    @Override
+    protected void additionalAuthenticationChecks(UserDetails userDetails,
+                                                  UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+
+        String username = authentication.getName();
+        String presentedPassword = (String)authentication.getCredentials();
+
+        // 根据用户名获取用户信息
+        User user = this.userService.getUserByEmailOrMobile(username);
+        if (user == null) {
+            throw new BadCredentialsException("用户名不存在");
+        } else {
+            if (authentication.getCredentials() == null) {
+                throw new BadCredentialsException("登录名或密码错误");
+            } else if (!userService.passwordMatch(presentedPassword, user.getPassword(), user.getSalt())) {
+                throw new BadCredentialsException("登录密码错误");
+            }
 //            throw new BadCredentialsException("登录名或密码错误");
-//        }
-//    }
+        }
+    }
 
 }
