@@ -1,5 +1,8 @@
 package com.example.lab.config;
 
+import com.example.lab.add.UserDetailsServiceImpl;
+import com.example.lab.add.provider.LoginAuthenticationProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -12,6 +15,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @Order(1)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    LoginAuthenticationProvider loginAuthenticationProvider;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     @Bean
     @Override
@@ -39,8 +48,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .withUser("john")
             .password(passwordEncoder().encode("123"))
             .roles("USER");
-    } // @formatter:on
 
+//        auth.authenticationProvider(loginAuthenticationProvider)
+//                .userDetailsService(userDetailsService)
+//                .passwordEncoder(passwordEncoder())
+//        ;
+    } // @formatter:on
+//
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
