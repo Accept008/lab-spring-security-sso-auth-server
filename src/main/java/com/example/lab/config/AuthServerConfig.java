@@ -40,40 +40,41 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
      */
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("test-secret");
-        return converter;
-//        JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter() {
-//            /**
-//             * 重写增强token的方法
-//             * 自定义返回相应的信息
-//             *
-//             */
-//
-//            @Override
-//            public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
-//
-//                String userName = authentication.getUserAuthentication().getName();
-//                // 与登录时候放进去的UserDetail实现类一直查看link{SecurityConfiguration}
-//                SmSecurityUser user = (SmSecurityUser) authentication.getUserAuthentication().getPrincipal();
-//                System.out.println("user -> "+ JSON.toJSONString(user));
-//                /** 自定义一些token属性 ***/
-//                final Map<String, Object> additionalInformation = new HashMap<>();
-//                additionalInformation.put("userId", user.getUserId());
-//                //additionalInformation.put("authorities", user.getAuthorities());
-//
-////                List<String> authorities = new ArrayList<>();
-////                authorities.add("USER");
-////                additionalInformation.put("authorities", authorities);
-//                ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInformation);
-//                OAuth2AccessToken enhancedToken = super.enhance(accessToken, authentication);
-//                return enhancedToken;
-//            }
-//
-//        };
-//        // 测试用,资源服务使用相同的字符达到一个对称加密的效果,生产时候使用RSA非对称加密方式
-//        accessTokenConverter.setSigningKey("test-secret");
-//        return accessTokenConverter;
+//        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+//        converter.setSigningKey("test-secret");
+//        return converter;
+
+        JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter() {
+            /**
+             * 重写增强token的方法
+             * 自定义返回相应的信息
+             *
+             */
+
+            @Override
+            public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
+
+                String userName = authentication.getUserAuthentication().getName();
+                // 与登录时候放进去的UserDetail实现类一直查看link{SecurityConfiguration}
+                SmSecurityUser user = (SmSecurityUser) authentication.getUserAuthentication().getPrincipal();
+                System.out.println("user -> "+ JSON.toJSONString(user));
+                /** 自定义一些token属性 ***/
+                final Map<String, Object> additionalInformation = new HashMap<>();
+                additionalInformation.put("userId", user.getUserId());
+                //additionalInformation.put("authorities", user.getAuthorities());
+
+//                List<String> authorities = new ArrayList<>();
+//                authorities.add("USER");
+//                additionalInformation.put("authorities", authorities);
+                ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInformation);
+                OAuth2AccessToken enhancedToken = super.enhance(accessToken, authentication);
+                return enhancedToken;
+            }
+
+        };
+        // 测试用,资源服务使用相同的字符达到一个对称加密的效果,生产时候使用RSA非对称加密方式
+        accessTokenConverter.setSigningKey("test-secret");
+        return accessTokenConverter;
     }
 
     /**
