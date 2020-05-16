@@ -1,6 +1,7 @@
 package com.example.lab.config;
 
 import com.alibaba.fastjson.JSON;
+import com.example.lab.OAuthWebResponseExceptionTranslator;
 import com.example.lab.add.SmSecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +34,16 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
      */
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    /**
+     * oauth 自定义异常转换器
+     */
+    @Autowired
+    OAuthWebResponseExceptionTranslator oauthWebResponseExceptionTranslator;
+    @Bean
+    public OAuthWebResponseExceptionTranslator getOAuthWebResponseExceptionTranslator(){
+        return new OAuthWebResponseExceptionTranslator();
+    }
 
     /**
      * 对Jwt签名时，增加一个密钥
@@ -91,6 +102,8 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .authenticationManager(authenticationManager)
                 .tokenStore(jwtTokenStore())
                 .accessTokenConverter(accessTokenConverter());
+
+        endpoints.exceptionTranslator(oauthWebResponseExceptionTranslator);
     }
 
     @Override
