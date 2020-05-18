@@ -29,21 +29,17 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     
     @Autowired    
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
     /**
-     * 注入AuthenticationManager ，密码模式用到
+     * 注入AuthenticationManager 密码模式用到
      */
     @Autowired
     private AuthenticationManager authenticationManager;
-
-    /**
-     * oauth 自定义异常转换器
-     */
-    @Autowired
-    OAuthWebResponseExceptionTranslator oauthWebResponseExceptionTranslator;
-    @Bean
-    public OAuthWebResponseExceptionTranslator getOAuthWebResponseExceptionTranslator(){
-        return new OAuthWebResponseExceptionTranslator();
-    }
 
     /**
      * 对Jwt签名时，增加一个密钥
@@ -51,10 +47,6 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
      */
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
-//        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-//        converter.setSigningKey("test-secret");
-//        return converter;
-
         JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter() {
             /**
              * 重写增强token的方法
@@ -74,9 +66,6 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 additionalInformation.put("userId", user.getUserId());
                 //additionalInformation.put("authorities", user.getAuthorities());
 
-//                List<String> authorities = new ArrayList<>();
-//                authorities.add("USER");
-//                additionalInformation.put("authorities", authorities);
                 ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInformation);
                 OAuth2AccessToken enhancedToken = super.enhance(accessToken, authentication);
                 return enhancedToken;
@@ -103,7 +92,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .tokenStore(jwtTokenStore())
                 .accessTokenConverter(accessTokenConverter());
 
-        endpoints.exceptionTranslator(oauthWebResponseExceptionTranslator);
+        endpoints.exceptionTranslator(new OAuthWebResponseExceptionTranslator());
     }
 
     @Override
@@ -126,9 +115,7 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
             .scopes("user_info")
             .autoApprove(true)
             .redirectUris("http://localhost:8082/ui/login","http://localhost:8083/ui2/login","http://localhost:8082/login","http://www.example.com/")
-        // .accessTokenValiditySeconds(3600)
-        ; // 1 hour
+        ;
     }
-
 
 }

@@ -15,19 +15,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@Order(2)
+//@Order(2)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     //【接管A-2】
     @Autowired
     LoginAuthenticationProvider loginAuthenticationProvider;
-
-    @Autowired
-    private AccessTokenThreadFilter accessTokenThreadFilter;
-
-    // 【接管A-3】
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
 
     @Bean
     @Override
@@ -35,38 +28,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception { // @formatter:off
-        http.addFilterBefore(accessTokenThreadFilter, UsernamePasswordAuthenticationFilter.class);
 
-        http.requestMatchers()
-            .antMatchers("/login", "/oauth/authorize")
-            .and()
-            .authorizeRequests()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .formLogin()
-            .permitAll()
-            .and().csrf().disable();
-    } // @formatter:on
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception { // @formatter:off
-//        auth.inMemoryAuthentication()
-//            .withUser("john")
-//            .password(passwordEncoder().encode("123"))
-//            .roles("USER");
-
-        // 【接管A-1】登录账号配置读取数据库
-        auth.authenticationProvider(loginAuthenticationProvider)
-                .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder())
-        ;
-    } // @formatter:on
-//
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
 }

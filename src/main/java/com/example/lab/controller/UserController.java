@@ -16,4 +16,16 @@ public class UserController {
         String userId = OauthContextHolder.getUserId();
         return principal;
     }
+
+    @RequestMapping("/xyz/001")
+    public String xyz001() {
+        String result = "get -> xyz/001";
+        return result;
+    }
+
+    @RequestMapping("/xyz/002")
+    public String xyz002() {
+        String result = "get -> xyz/002";
+        return result;
+    }
 }
